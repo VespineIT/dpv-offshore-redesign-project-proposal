@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Proposal: DPV Offshore Redesign</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- 2. Load Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- 3. Custom Styles & Branding -->
+    <style>
+        :root {
+            --primary: #FF4500;
+            --primary-hover: #e03c00;
+            --primary-light: #fff0e6;
+            --premium: #1d4ed8; /* blue-700 for premium */
+            --premium-light: #eff6ff; /* blue-50 */
+            --premium-border: #93c5fd; /* blue-300 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* light gray background */
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            color: #111827; /* gray-900 */
+        }
+        h2 {
+            font-size: 1.5rem; /* 24px */
+            line-height: 2rem; /* 32px */
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+        }
+        h3 {
+            font-size: 1.25rem; /* 20px */
+            line-height: 1.75rem; /* 28px */
+            font-weight: 600;
+            color: #1f2937; /* gray-800 */
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Icon styles */
+        .icon-lg {
+            width: 1.5rem; /* 24px */
+            height: 1.5rem; /* 24px */
+            margin-right: 0.75rem;
+            color: var(--primary);
+        }
+        .icon-md {
+            width: 1.25rem; /* 20px */
+            height: 1.25rem; /* 20px */
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        .icon-sm-check {
+            width: 1.25rem;
+            height: 1.25rem;
+            color: #16a34a; /* green-600 */
+        }
+        
+        /* Custom Button for Primary Action */
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; /* 8px */
+            transition: all 0.2s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        /* Interactive Tab Styles */
+        .tab-btn {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem; /* 14px */
+            font-weight: 600;
+            text-align: center;
+            border-radius: 0.375rem; /* 6px */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .tab-btn.active {
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .tab-btn.active.option-1, .tab-btn.active.option-2 { background-color: var(--primary); }
+        .tab-btn.active.option-3 { background-color: var(--premium); }
+        
+        .tab-btn.inactive {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+        }
+        .tab-btn.inactive:hover {
+            background-color: #d1d5db; /* gray-300 */
+        }
+        
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+            vertical-align: middle;
+        }
+        th {
+            background-color: #f9fafb; /* gray-50 */
+            font-weight: 600;
+            color: #4b5563; /* gray-600 */
+            font-size: 0.75rem; /* 12px */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        tbody tr:last-child td {
+            border-bottom: 0;
+        }
+        
+        /* Responsive Table */
+        .table-container {
+            overflow-x: auto;
+            border: 1px solid #e5e7eb; /* gray-200 */
+            border-radius: 0.5rem; /* 8px */
+            background-color: white;
+        }
+        
+        /* Total / Price Display */
+        .price-display {
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .price-display .amount {
+            font-size: 2.5rem; /* 40px */
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        .price-display .label {
+            font-weight: 600;
+            color: #4b5563; /* gray-600 */
+            font-size: 1rem;
+        }
+        
+        /* Standard Price Box */
+        .price-display.standard {
+            background-color: var(--primary-light);
+            border: 1px solid var(--primary);
+        }
+        .price-display.standard .amount {
+            color: var(--primary);
+        }
+
+        /* Premium Price Box */
+        .price-display.premium {
+            background-color: var(--premium-light);
+            border: 1px solid var(--premium-border);
+        }
+        .price-display.premium .amount {
+            color: var(--premium);
+        }
+
+        /* Advanced Styles for Calculator */
+        .calculator-container {
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        .calculator-container input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            margin-bottom: 1rem;
+        }
+        .calculator-result {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-4 md:p-10">
+
+    <main class="max-w-5xl mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
+        <!-- Header & Logo -->
+        <header class="p-6 md:p-8 border-b border-gray-200 bg-white">
+            <div class="flex justify-between items-center">
+                <!-- Logo Placeholder -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-[#FF4500] text-white flex items-center justify-center rounded-lg text-2xl font-bold shadow-md">
+                        V
+                    </div>
+                    <span class="text-2xl font-bold text-gray-900">VespineIT</span>
+                </div>
+                <div class="text-right">
+                    <h1 class="text-2xl md:text-3xl font-bold text-gray-900">Website Redesign Proposal</h1>
+                    <p class="text-md text-gray-500">Prepared for DPV Offshore</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Proposal Body -->
+        <div class="p-6 md:p-10 space-y-12">
+
+            <!-- Section: Executive Summary -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    1. Executive Summary
+                </h2>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    This proposal outlines the project to completely redesign and develop the <code class="text-sm bg-gray-200 p-1 rounded">dpvoffshore.com</code> website. Our solution is to build a modern, high-performance website using <strong>Next.js</strong> for a best-in-class user experience and significantly improved SEO.
+                </p>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    We will replicate all existing sections and add a new <strong>Careers section</strong>, including advanced features like job application forms and dynamic filtering for job listings. We are providing three distinct options to fit your needs:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mt-4">
+                    <li><strong>Option 1: Static Website:</strong> A high-speed, secure, "brochure-style" website with optimized images and lazy loading for faster performance.</li>
+                    <li><strong>Option 2: Dynamic Website:</strong> Includes Option 1, plus a professional <strong>Sanity.io CMS</strong> so your team can manage blog and career content, with real-time previews and collaborative editing.</li>
+                    <li><strong>Option 3: Premium Suite:</strong> Includes Option 2, plus foundational SEO, analytics setup, advanced security features like WAF, and 3 months of technical support with monthly performance reports.</li>
+                </ul>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    We estimate a total project timeline of <strong>6 weeks</strong> from start to finish, with milestones for client reviews to ensure alignment.
+                </p>
+            </section>
+
+            <!-- Section: Technology Stack -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
+                    1.5 Technology Stack
+                </h2>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    To deliver a cutting-edge website, we will leverage the following advanced technologies:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mt-4">
+                    <li><strong>Frontend Framework:</strong> Next.js for server-side rendering, static site generation, and API routes, ensuring optimal performance and SEO.</li>
+                    <li><strong>Styling:</strong> Tailwind CSS for rapid, responsive design with custom theming.</li>
+                    <li><strong>CMS:</strong> Sanity.io (Options 2 & 3) for headless content management, supporting structured content, image optimization, and real-time collaboration.</li>
+                    <li><strong>Integrations:</strong> HubSpot for lead management, Google Analytics for tracking, and optional CI/CD with Vercel or GitHub Actions.</li>
+                    <li><strong>Security & Performance:</strong> Built-in features like automatic HTTPS, CDN distribution, and protection against common vulnerabilities (OWASP top 10).</li>
+                </ul>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    This stack ensures scalability, maintainability, and future-proofing for your website.
+                </p>
+            </section>
+
+            <!-- Section: Project Scope -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12M3.75 3v18M20.25 12M20.25 3v18M12 3.75H3.75m16.5 0H12m0 16.5H3.75m16.5 0H12M12 12l-3.75-3.75M12 12l3.75 3.75M12 12l3.75-3.75M12 12L8.25 15" /></svg>
+                    2. Project Scope & Deliverables
+                </h2>
+                <div class="mt-4 space-y-8">
+                    <div>
+                        <h3>
+                            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 18H7.5m3-6h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0M3.75 12H7.5" /></svg>
+                            Phase 1: Design & Discovery (Weeks 1-2)
+                        </h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-3 ml-2">
+                            <li><strong>Analysis:</strong> Full review of the current <code class="text-sm bg-gray-200 p-1 rounded">dpvoffshore.com</code>, including user flow mapping, competitor analysis, and accessibility audit (WCAG 2.1 compliance).</li>
+                            <li><strong>UI/UX Design:</strong> We will create a modern, professional, and mobile-first design in <strong>Figma</strong>, with wireframes, high-fidelity mockups, and interactive prototypes.</li>
+                            <li><strong>Deliverables:</strong> Mockups for all major pages, one round of design revisions, and a style guide for consistency.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>
+                            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>
+                            Phase 2: Development (Weeks 3-5)
+                        </h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-3 ml-2">
+                            <li><strong>Frontend:</strong> The approved Figma design will be developed into a pixel-perfect, responsive website using <strong>Next.js</strong>, with optimizations for Core Web Vitals (LCP, FID, CLS).</li>
+                            <li><strong>Headless CMS (For Option 2 & 3):</strong> We will set up and configure a <strong>Sanity.io</strong> content studio for "Blog Posts" and "Career Listings," including custom schemas, validation rules, and image pipelines.</li>
+                            <li><strong>Integrations:</strong> All contact forms will be integrated to send leads directly to your <strong>HubSpot</strong> account, plus email notifications and spam protection with reCAPTCHA.</li>
+                            <li><strong>Advanced Features:</strong> Dynamic search for careers, pagination for blogs, and PWA capabilities for offline access.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>
+                            <svg class="icon-md" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.63 2.25c-5.5 0-10.34 3.9-11.62 9.08a14.98 14.98 0 006.16 12.12v-4.8m5.84-2.58a6 6 0 01-5.84 7.38v-4.8m5.84 0a6 6 0 01-5.84-7.38m5.84 7.38l-4.68-4.68" /></svg>
+                            Phase 3: Launch & Support (Week 6+)
+                        </h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2 mt-3 ml-2">
+                            <li><strong>Testing:</strong> Thorough cross-browser and multi-device testing, including automated tests with Jest, performance benchmarking, and security scans.</li>
+                            <li><strong>Deployment:</strong> The final site will be deployed to a modern hosting provider (e.g., Vercel), with CI/CD pipelines for future updates.</li>
+                            <li><strong>Handover & Training:</strong> Full training for your team on using the Sanity.io studio (for Option 2 & 3), including video tutorials and documentation.</li>
+                            <li class="font-medium text-blue-700"><strong>SEO & Support (For Option 3):</strong> Google Analytics setup, sitemap submission, meta tag optimization, and 3 months of priority support with bug fixes and enhancements.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Timeline -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" /></svg>
+                    3. Project Timeline (6 Weeks)
+                </h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Week(s)</th>
+                                <th>Phase</th>
+                                <th>Key Activities</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr>
+                                <td class="font-medium">1-2</td>
+                                <td>Design</td>
+                                <td>Analysis, Figma UI/UX Design, Client Feedback & Revisions</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">3-4</td>
+                                <td>Frontend</td>
+                                <td>Next.js development of all static pages and site structure</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">5</td>
+                                <td>CMS / Integration</td>
+                                <td>(Option 2/3) Set up Sanity.io schemas & connect to Next.js</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">6</td>
+                                <td>Testing & Launch</td>
+                                <td>HubSpot integration, final testing, deployment, and handover</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">7-18</td>
+                                <td>Support</td>
+                                <td class="text-blue-700 font-medium">(Option 3) 3 Months of SEO monitoring & technical support</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section: Investment & Budget (INTERACTIVE) -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.75A.75.75 0 013 4.5h.75m0 0h.75A.75.75 0 014.5 6v.75m0 0v-.75A.75.75 0 013.75 6h.75m-1.5 0h.75A.75.75 0 013 6.75v.75m0 0v-.75A.75.75 0 013 6.75h.75M6 6h.75A.75.75 0 017.5 6.75v.75m0 0v-.75A.75.75 0 016.75 6h.75M6 6v.75A.75.75 0 016.75 7.5h.75m0 0v-.75A.75.75 0 017.5 6.75h.75M6 6h.75v.75A.75.75 0 016 6.75h.75M6.75 6h.75v.75A.75.75 0 016.75 6h.75m.75 0h.75A.75.75 0 019 6.75v.75m0 0v-.75A.75.75 0 018.25 6h.75M9 6v.75A.75.75 0 019.75 7.5h.75m0 0v-.75A.75.75 0 0110.5 6.75h.75M9 6h.75v.75A.75.75 0 019 6.75h.75m.75 0h.75v.75A.75.75 0 019.75 6.75h.75m.75 0h.75A.75.75 0 0112 6.75v.75m0 0v-.75A.75.75 0 0111.25 6h.75m-1.5 0h.75v.75A.75.75 0 019.75 6.75H10.5m.75 0h.75v.75A.75.75 0 0110.5 6.75h.75m.75 0h.75A.75.75 0 0113.5 6.75v.75m0 0v-.75A.75.75 0 0112.75 6h.75m-1.5 0h.75v.75A.75.75 0 0111.25 6.75H12m.75 0h.75v.75A.75.75 0 0112 6.75h.75m.75 0h.75A.75.75 0 0115 6.75v.75m0 0v-.75A.75.75 0 0114.25 6h.75m-1.5 0h.75v.75A.75.75 0 0112.75 6.75H13.5m.75 0h.75v.75A.75.75 0 0113.5 6.75h.75m.75 0h.75A.75.75 0 0116.5 6.75v.75m0 0v-.75A.75.75 0 0115.75 6h.75m-1.5 0h.75v.75A.75.75 0 0114.25 6.75H15m.75 0h.75v.75A.75.75 0 0115 6.75h.75m.75 0h.75A.75.75 0 0118 6.75v.75m0 0v-.75A.75.75 0 0117.25 6h.75m-1.5 0h.75v.75A.75.75 0 0115.75 6.75H16.5m.75 0h.75v.75A.75.75 0 0116.5 6.75h.75m.75 0h.75A.75.75 0 0119.5 6.75v.75m0 0v-.75A.75.75 0 0118.75 6h.75m-1.5 0h.75v.75A.75.75 0 0117.25 6.75H18m.75 0h.75v.75A.75.75 0 0118 6.75h.75m.75 0h.75A.75.75 0 0121 6.75v.75m0 0v-.75A.75.75 0 0120.25 6h.75m-1.5 0h.75v.75A.75.75 0 0118.75 6.75H19.5m.75 0h.75v.75A.75.75 0 0119.5 6.75h.75m.75 0h.75a.75.75 0 01.75.75v.75m0 0v-.75a.75.75 0 01-.75-.75h.75M3 12h18M3 15h18" /></svg>
+                    4. Investment & Budget
+                </h2>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    Select an option below to see the detailed breakdown. We recommend Option 2 for the best long-term value and content flexibility.
+                </p>
+
+                <!-- Interactive Tab Buttons -->
+                <div class="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 p-1 bg-gray-100 rounded-lg mt-6">
+                    <button id="btn-option-1" class="tab-btn inactive option-1">
+                        Option 1: Static Site
+                    </button>
+                    <button id="btn-option-2" class="tab-btn active option-2">
+                        Option 2: Dynamic + CMS
+                    </button>
+                    <button id="btn-option-3" class="tab-btn inactive option-3">
+                        Option 3: Premium Suite
+                    </button>
+                </div>
+
+                <!-- Dynamic Content Area -->
+                <div id="proposal-options-content" class="mt-6">
+
+                    <!-- Option 1 Content (Hidden by default) -->
+                    <div id="content-option-1" class="hidden">
+                        <div class="price-display standard">
+                            <div class="label">Option 1 Total</div>
+                            <div class="amount">$500</div>
+                        </div>
+                        <p class="text-gray-700 mt-4">
+                            This option is fastest to deploy and highly secure. All content, including blog posts and career listings, is "hard-coded." To add a new blog post, you would send the details to us, and we would add it as a small developer task. Ideal for low-maintenance sites.
+                        </p>
+                        <h3 class="mt-6 mb-2">Feature Breakdown:</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature / Section</th>
+                                        <th class="text-center">Included</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>UI/UX Design (Figma)</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$150</td></tr>
+                                    <tr><td>Homepage, Navigation, & Footer</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$100</td></tr>
+                                    <tr><td>About Us & HSEQ Pages</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$50</td></tr>
+                                    <tr><td>Services & Fleet Pages</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$150</td></tr>
+                                    <tr><td>Blog & Careers (Static Pages)</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$50</td></tr>
+                                    <tr><td>HubSpot Contact Form Integration</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">Included</td></tr>
+                                    <tr class="bg-gray-50 font-bold"><td class="text-gray-900">Total</td><td></td><td class="text-gray-900">$500</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Option 2 Content (Visible by default) -->
+                    <div id="content-option-2" class="block">
+                        <div class="price-display standard">
+                            <div class="label">Option 2 Total (Recommended)</div>
+                            <div class="amount">$900</div>
+                        </div>
+                        <p class="text-gray-700 mt-4">
+                            This option gives you full control over your Blog and Careers sections via a professional, secure <strong>Sanity.io</strong> content studio. This is the best choice for a living website with frequent updates.
+                        </p>
+                        <h3 class="mt-6 mb-2">Feature Breakdown:</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature / Section</th>
+                                        <th class="text-center">Included</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>All features from Option 1</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$500</td></tr>
+                                    <tr><td class="font-bold text-green-700">Sanity.io CMS Setup & Integration</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium text-green-700">$400</td></tr>
+                                    <tr><td class="font-bold text-green-700">CMS Training Session</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium text-green-700">Included</td></tr>
+                                    <tr class="bg-gray-50 font-bold"><td class="text-gray-900">Total</td><td></td><td class="text-gray-900">$900</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Option 3 Content (Hidden by default) -->
+                    <div id="content-option-3" class="hidden">
+                        <div class="price-display premium">
+                            <div class="label">Option 3 Total (Premium Suite)</div>
+                            <div class="amount">$1400</div>
+                        </div>
+                        <p class="text-gray-700 mt-4">
+                            The complete solution. Includes the dynamic CMS website, plus foundational SEO, analytics, and 3 months of post-launch support to ensure a successful rollout and ongoing optimization.
+                        </p>
+                        <h3 class="mt-6 mb-2">Feature Breakdown:</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Feature / Section</th>
+                                        <th class="text-center">Included</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>All features from Option 2</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium">$900</td></tr>
+                                    <tr><td class="font-bold text-blue-700">Foundational SEO Setup</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium text-blue-700">$200</td></tr>
+                                    <tr><td class="font-bold text-blue-700">Google Analytics & Search Console Setup</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium text-blue-700">$100</td></tr>
+                                    <tr><td class="font-bold text-blue-700">3 Months Priority Support & Maintenance</td><td class="text-center"><svg class="icon-sm-check mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" /></svg></td><td class="font-medium text-blue-700">$200</td></tr>
+                                    <tr class="bg-gray-50 font-bold"><td class="text-gray-900">Total</td><td></td><td class="text-gray-900">$1400</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section: Hosting Costs -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75l.94-2.28c.39-1.01.39-2.11 0-3.12l-.94-2.28a.75.75 0 01.53-1.002l2.62-.88c1.04-.35 2.18-.35 3.22 0l2.62.88a.75.75 0 01.53 1.002l-.94 2.28c-.39 1.01-.39 2.11 0 3.12l.94 2.28a.75.75 0 01-.53 1.002l-2.62.88c-1.04.35-2.18.35-3.22 0l-2.62-.88a.75.75 0 01-.53-1.002zM15.75 12.75l.94-2.28c.39-1.01.39-2.11 0-3.12l-.94-2.28a.75.75 0 01.53-1.002l2.62-.88c1.04-.35 2.18-.35 3.22 0l2.62.88a.75.75 0 01.53 1.002l-.94 2.28c-.39 1.01-.39 2.11 0 3.12l.94 2.28a.75.75 0 01-.53 1.002l-2.62.88c-1.04.35-2.18.35-3.22 0l-2.62-.88a.75.75 0 01-.53-1.002zM7.5 12.75l.94-2.28c.39-1.01.39-2.11 0-3.12l-.94-2.28a.75.75 0 01.53-1.002l2.62-.88c1.04-.35 2.18-.35 3.22 0l2.62.88a.75.75 0 01.53 1.002l-.94 2.28c-.39 1.01-.39 2.11 0 3.12l.94 2.28a.75.75 0 01-.53 1.002l-2.62.88c-1.04.35-2.18.35-3.22 0l-2.62-.88a.75.75 0 01-.53-1.002z" /></svg>
+                    5. Estimated Monthly Hosting Costs
+                </h2>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    This is a major advantage of our new approach. By using a Headless CMS (Option 2 & 3), your hosting costs become <strong>simpler and significantly cheaper</strong>. You no longer need a separate database or backend server. Below are real pricing based on current (2025) rates from providers. Prices may vary based on usage; estimates assume low to moderate traffic.
+                </p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cost Level / Provider</th>
+                                <th>Services & Details</th>
+                                <th>Estimated Total (Monthly)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-700">
+                            <tr>
+                                <td class="font-medium text-green-600">Low-Cost / Free (Recommended) - Vercel + Sanity</td>
+                                <td>
+                                    <strong>Host (Vercel Hobby):</strong> $0.00 / month (Free Tier with global CDN, CI/CD)<br>
+                                    <strong>CMS (Sanity Free):</strong> $0.00 / month (Limited API calls, 3 users)
+                                </td>
+                                <td class="font-medium text-green-600">$0 / month</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Medium Performance - Hostinger + Sanity</td>
+                                <td>
+                                    <strong>Host (Hostinger Premium):</strong> $2.49 / month (Unlimited bandwidth, free SSL)<br>
+                                    <strong>CMS (Sanity Free):</strong> $0.00 / month
+                                </td>
+                                <td class="font-medium">$2.49 / month</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Cloud Option - AWS Amplify Free Tier + Sanity</td>
+                                <td>
+                                    <strong>Host (AWS Amplify Free):</strong> $0.00 / month (Up to 5GB storage, 15GB transfer, 1000 build min)<br>
+                                    <strong>CMS (Sanity Free):</strong> $0.00 / month
+                                </td>
+                                <td class="font-medium">$0 / month (for low usage)</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Cloud Option - AWS Amplify Paid + Sanity Growth</td>
+                                <td>
+                                    <strong>Host (AWS Amplify Usage-Based):</strong> ~$5-10 / month (e.g., $0.023/GB storage, $0.15/GB transfer for moderate traffic)<br>
+                                    <strong>CMS (Sanity Growth):</strong> $99 / month (10 users, higher quotas)
+                                </td>
+                                <td class="font-medium">~$104-109 / month</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Enterprise Cloud - Azure Static Web Apps Free + Sanity</td>
+                                <td>
+                                    <strong>Host (Azure Static Web Apps Free):</strong> $0.00 / month (For hobbies, personal projects, global CDN)<br>
+                                    <strong>CMS (Sanity Free):</strong> $0.00 / month
+                                </td>
+                                <td class="font-medium">$0 / month</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">Enterprise Cloud - Azure Static Web Apps Standard + Sanity Growth</td>
+                                <td>
+                                    <strong>Host (Azure Static Web Apps Standard):</strong> $9 / month per app (Production features, custom domains, SLA)<br>
+                                    <strong>CMS (Sanity Growth):</strong> $99 / month
+                                </td>
+                                <td class="font-medium">$108 / month</td>
+                            </tr>
+                            <tr>
+                                <td class="font-medium">High Performance - Vercel Pro + Sanity Growth</td>
+                                <td>
+                                    <strong>Host (Vercel Pro):</strong> $20 / month (Faster builds, team collaboration)<br>
+                                    <strong>CMS (Sanity Growth):</strong> $99 / month
+                                </td>
+                                <td class="font-medium">$119 / month</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+            </section>
+
+            <!-- Section: Next Steps -->
+            <section>
+                <h2>
+                    <svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5" /></svg>
+                    6. Next Steps
+                </h2>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    We are excited to partner with DPV Offshore to build a world-class website and provide you with a powerful, modern content management experience.
+                </p>
+                <p class="text-gray-700 mt-4 leading-relaxed">
+                    To move forward with this project, we require:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-2 mt-4">
+                    <li>A signed copy of this proposal (or email confirmation).</li>
+                    <li>A 50% down payment to begin the design phase.</li>
+                </ul>
+                <div class="mt-8 text-center">
+                    <a href="mailto:services@vespineit.com" class="btn-primary">
+                        Accept Proposal & Get Started
+                        <svg class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" /></svg>
+                    </a>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="text-center p-6 bg-gray-50 border-t border-gray-200">
+            <p class="text-sm text-gray-500">&copy; 2025 vespineiT. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <!-- 4. JavaScript for Interactivity -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get references to all the elements
+            const buttons = {
+                1: document.getElementById('btn-option-1'),
+                2: document.getElementById('btn-option-2'),
+                3: document.getElementById('btn-option-3')
+            };
+
+            const contents = {
+                1: document.getElementById('content-option-1'),
+                2: document.getElementById('content-option-2'),
+                3: document.getElementById('content-option-3')
+            };
+
+            // Function to switch tabs
+            function switchTab(optionToShow) {
+                // Loop over all buttons and contents
+                [1, 2, 3].forEach(optionNum => {
+                    const button = buttons[optionNum];
+                    const content = contents[optionNum];
+
+                    if (optionNum === optionToShow) {
+                        // Activate this tab
+                        button.classList.add('active');
+                        button.classList.remove('inactive');
+                        content.classList.remove('hidden');
+                        content.classList.add('block');
+                    } else {
+                        // Deactivate all other tabs
+                        button.classList.remove('active');
+                        button.classList.add('inactive');
+                        content.classList.add('hidden');
+                        content.classList.remove('block');
+                    }
+                });
+            }
+
+            // Set up event listeners
+            buttons[1].addEventListener('click', () => switchTab(1));
+            buttons[2].addEventListener('click', () => switchTab(2));
+            buttons[3].addEventListener('click', () => switchTab(3));
+
+            // Set the initial state (Option 2 is active by default)
+            switchTab(2);
+
+            // Hosting Cost Calculator
+            const calculateBtn = document.getElementById('calculate-btn');
+            const trafficInput = document.getElementById('traffic');
+            const storageInput = document.getElementById('storage');
+            const resultElem = document.getElementById('calc-result');
+
+            calculateBtn.addEventListener('click', () => {
+                const traffic = parseFloat(trafficInput.value) || 0;
+                const storage = parseFloat(storageInput.value) || 0;
+
+                // Simple estimation based on AWS-like pricing: $0.023/GB storage + $0.15/GB transfer
+                const storageCost = storage * 0.023;
+                const transferCost = traffic * 0.15;
+                const totalCost = (storageCost + transferCost).toFixed(2);
+
+                resultElem.textContent = `Estimated Cost: $${totalCost}`;
+            });
+        });
+    </script>
+
+</body>
+</html>
